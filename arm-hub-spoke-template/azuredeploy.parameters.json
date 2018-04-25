@@ -1,0 +1,36 @@
+ {
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "hub": {
+            "value": {
+                "resourceGroup": "ansHub",
+                "vnet": { "name": "ansHub", "addressPrefixes": [ "10.0.0.0/16" ] },
+                "subnets": [
+                    { "name": "GatewaySubnet", "addressPrefix": "10.0.0.0/24" },
+                    { "name": "ManagementSubnet", "addressPrefix": "10.0.1.0/24" }
+                ],
+                "createGateway": true,
+                "gatewaySku": "VpnGw1"
+            }
+        },
+        "spokes": {
+            "value": [
+                {
+                    "resourceGroup": "ansSpoke1",
+                    "vnet": { "name": "ansSpoke1", "addressPrefixes": [ "10.1.0.0/16"  ] },
+                    "subnets": [
+                        { "name": "workload", "addressPrefix": "10.1.0.0/24" }
+                    ]
+                },
+                {
+                    "resourceGroup": "ansSpoke2",
+                    "vnet": { "name": "ansSpoke2", "addressPrefixes": [ "10.2.0.0/16"  ] },
+                    "subnets": [
+                        { "name": "workload", "addressPrefix": "10.2.0.0/24" }
+                    ]
+                }
+            ]
+        }
+    }
+}
