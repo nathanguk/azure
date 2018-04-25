@@ -8,13 +8,6 @@ $templateUri="https://raw.githubusercontent.com/nathanguk/azure/master/arm-hub-s
 $parametersUri="https://raw.githubusercontent.com/nathanguk/azure/master/arm-hub-spoke-template/azuredeploy.parameters.json"
 $loc="westeurope"
 
-# Check that az is installed
-get-command az 2>&1 | Out-Null
-if($? -ne "True"){
-    write-output "Error: az must be installed.  Go to https://aka.ms/GetTheAzureCLI."
-    break
-}
-
 $parameters = Invoke-RestMethod -Uri $parametersUri
 
 # Deploy the Hub resource group
