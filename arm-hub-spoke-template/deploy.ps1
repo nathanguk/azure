@@ -7,7 +7,6 @@ Write-Output "Logged into Azure RM account"
 $templateUri="https://raw.githubusercontent.com/dalejmarshall/arm/master/azuredeploy.json"
 $parametersUri="https://raw.githubusercontent.com/dalejmarshall/arm/master/azuredeploy.parameters.json"
 $loc="westeurope"
-$query="properties.outputs.vpnGatewayPipId.value"
 
 # Check that az is installed
 get-command az 2>&1 | Out-Null
