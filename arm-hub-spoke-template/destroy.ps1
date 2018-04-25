@@ -5,7 +5,6 @@ Write-Output "Logged into Azure RM account"
 
 # Set Variables
 $parametersUri="https://raw.githubusercontent.com/nathanguk/azure/master/arm-hub-spoke-template/azuredeploy.parameters.json"
-$loc="westeurope"
 
 $parameters = Invoke-RestMethod -Uri $parametersUri
 
