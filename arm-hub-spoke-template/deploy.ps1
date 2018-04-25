@@ -4,8 +4,8 @@ Login-AzureRmAccount
 Write-Output "Logged into Azure RM account"
 
 # Set Variables
-$templateUri="https://raw.githubusercontent.com/dalejmarshall/arm/master/azuredeploy.json"
-$parametersUri="https://raw.githubusercontent.com/dalejmarshall/arm/master/azuredeploy.parameters.json"
+$templateUri="https://raw.githubusercontent.com/nathanguk/azure/master/arm-hub-spoke-template/azuredeploy.json"
+$parametersUri="https://raw.githubusercontent.com/nathanguk/azure/master/arm-hub-spoke-template/azuredeploy.parameters.json"
 $loc="westeurope"
 
 # Check that az is installed
