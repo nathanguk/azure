@@ -40,7 +40,9 @@ write-output $vpnGatewayPipId
 # The VPN gateway's public IP is dynamic, and so will not be allocated until the gateway itself is up and running
 # Once the deployment has cocompleted then we determine the address
 Write-Output "Getting Public IP Address"
-Write-Output (Get-AzureRmPublicIpAddress -Name $vpnGatewayPipId -ResourceGroupName $hubrg)
+$vpnGatewayPipName = (Get-AzureRmResource -ResourceId $vpnGatewayPipId).Name
+
+Write-Output "Public IP Address: " (Get-AzureRmPublicIpAddress -Name $vpnGatewayPipName -ResourceGroupName $hubrg).IpAddress
 
 #Logout of Azure
 Remove-AzureRMAccount
