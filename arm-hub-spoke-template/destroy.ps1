@@ -5,8 +5,8 @@ Write-Output "Logged into Azure RM account"
 
 # Set Variables
 $parametersUri="https://raw.githubusercontent.com/nathanguk/azure/master/arm-hub-spoke-template/azuredeploy.parameters.json"
-
 $parameters = Invoke-RestMethod -Uri $parametersUri
+
 
 # Deploy the Hub resource group
 $hubrg = $parameters.parameters.hub.value.resourceGroup

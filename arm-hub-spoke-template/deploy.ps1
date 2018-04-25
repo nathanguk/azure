@@ -3,23 +3,32 @@ Write-Output "Login to Azure RM account"
 Login-AzureRmAccount
 Write-Output "Logged into Azure RM account"
 
-# Set Variables
+# Set Template Variables
 $templateUri="https://raw.githubusercontent.com/nathanguk/azure/master/arm-hub-spoke-template/azuredeploy.json"
 $parametersUri="https://raw.githubusercontent.com/nathanguk/azure/master/arm-hub-spoke-template/azuredeploy.parameters.json"
 $loc="westeurope"
-
 $parameters = Invoke-RestMethod -Uri $parametersUri
+
+# Set Policy Variables
+$policydefinitions = "https://raw.githubusercontent.com/Azure/azure-policy/master/samples/PolicyInitiatives/multiple-billing-tags/azurepolicyset.definitions.json"
+$policysetparameters = "https://raw.githubusercontent.com/Azure/azure-policy/master/samples/PolicyInitiatives/multiple-billing-tags/azurepolicyset.parameters.json"
+
+$policyset= New-AzureRmPolicySetDefinition -Name "multiple-billing-tags" -DisplayName "Billing Tags Policy Initiative" -Description "Specify cost Center tag and product name tag" -PolicyDefinition $policydefinitions -Parameter $policysetparameters
 
 # Deploy the Hub resource group
 $hubrg = $parameters.parameters.hub.value.resourceGroup
 Write-Output "Creating Resource Group: "$hubrg
-New-AzureRmResourceGroup -Location $loc -Name $hubrg
+$hubrgObj = New-AzureRmResourceGroup -Location $loc -Name $hubrg
+Write-Output "Assigning Policy To: "$hubrg
+New-AzureRmPolicyAssignment -PolicySetDefinition $policyset -Name "ProductionPolicy" -Scope $hubrgObj.ResourceId  -costCenterValue "ProductionCC" -productNameValue "Production"  -Sku @{"Name"="A1";"Tier"="Standard"}
 
 # Deploy the Spoke resource group/s
 foreach($spoke in $parameters.parameters.spokes.value){
     $rg = $spoke.resourceGroup
     Write-Output "Creating Resource Group: "$rg
-    New-AzureRmResourceGroup -Location $loc -Name $rg
+    $rgObj = New-AzureRmResourceGroup -Location $loc -Name $rg
+    Write-Output "Assigning Policy To: "$rg
+    New-AzureRmPolicyAssignment -PolicySetDefinition $policyset -Name (concat[$rg,"ProductionPolicy"]) -Scope $rgObj.ResourceId  -costCenterValue "ProductionCC" -productNameValue "Production"  -Sku @{"Name"="A1";"Tier"="Standard"}
 } 
 
 # Deploy the ARM template into the Hub resource group
