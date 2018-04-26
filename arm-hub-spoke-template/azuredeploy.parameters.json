@@ -34,7 +34,7 @@
         },
         "policy": {
             "value": {
-                "allowedLocations": ["uksouth", "ukwest"],
+                "allowedLocations": {"listOfAllowedLocations": { "value": [ "uksouth", "ukwest" ] }},
                 "restrictedVirtualMachines": [],
                 "enforcedTags": []
             }
