@@ -9,18 +9,20 @@ $parametersUri="https://raw.githubusercontent.com/nathanguk/azure/master/arm-hub
 $loc="westeurope"
 $parameters = Invoke-RestMethod -Uri $parametersUri
 
-# Set Policy Variables
-$policydefinitions = "https://raw.githubusercontent.com/nathanguk/azure/master/arm-hub-spoke-template/azurepolicyset.definitions.json"
-$policysetparameters = "https://raw.githubusercontent.com/nathanguk/azure/master/arm-hub-spoke-template/azurepolicyset.parameters.json"
+# Deploy Azure RM "Allowed Location" Policy
+$Policy = Get-AzureRmPolicyDefinition | Where-Object {$_.Properties.DisplayName -eq 'Allowed locations' -and $_.Properties.PolicyType -eq 'BuiltIn'}
+$AllowedLocations = @{"listOfAllowedLocations"=($parameters.parameters.policy.value.allowedLocations)}
+New-AzureRmPolicyAssignment -Name "Allowed Locations" -PolicyDefinition $Policy -Scope "/subscriptions/$((Get-AzureRmContext).Subscription.Id)" -PolicyParameterObject $AllowedLocations
 
-$policyset= New-AzureRmPolicySetDefinition -Name "multiple-billing-tags" -DisplayName "Billing Tags Policy Initiative" -Description "Specify cost Center tag and product name tag" -PolicyDefinition $policydefinitions -Parameter $policysetparameters
+# Deploy Azure RM "Enforce Tag and its value" Policy
+$Policy = Get-AzureRmPolicyDefinition | Where-Object {$_.Properties.DisplayName -eq 'Enforce tag and its value' -and $_.Properties.PolicyType -eq 'BuiltIn'}
+
 
 # Deploy the Hub resource group
 $hubrg = $parameters.parameters.hub.value.resourceGroup
 Write-Output "Creating Resource Group: "$hubrg
 $hubrgObj = New-AzureRmResourceGroup -Location $loc -Name $hubrg
 Write-Output "Assigning Policy To: "$hubrg
-New-AzureRmPolicyAssignment -PolicySetDefinition $policyset -Name "$hubrg Policy" -Scope $hubrgObj.ResourceId  -costCenterValue "ProductionCC" -productNameValue "Production"  -Sku @{"Name"="A1";"Tier"="Standard"}
 
 # Deploy the Spoke resource group/s
 foreach($spoke in $parameters.parameters.spokes.value){
@@ -28,7 +30,6 @@ foreach($spoke in $parameters.parameters.spokes.value){
     Write-Output "Creating Resource Group: "$rg
     $rgObj = New-AzureRmResourceGroup -Location $loc -Name $rg
     Write-Output "Assigning Policy To: "$rg
-    New-AzureRmPolicyAssignment -PolicySetDefinition $policyset -Name "$rg Policy" -Scope $rgObj.ResourceId  -costCenterValue "ProductionCC" -productNameValue "Production"  -Sku @{"Name"="A1";"Tier"="Standard"}
 } 
 
 # Deploy the ARM template into the Hub resource group
