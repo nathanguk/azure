@@ -43,6 +43,13 @@
           "metadata": {
               "description": "Array of spoke objects. See defaultValue for example."
           }
+      },
+      "policy": {
+        "value": {
+            "allowedLocations": ["uksouth", "ukwest"],
+            "restrictedVirtualMachines": [],
+            "enforcedTags": []
+        }
       }
   },
   "variables": {
