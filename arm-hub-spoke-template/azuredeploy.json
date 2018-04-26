@@ -45,11 +45,12 @@
           }
       },
       "policy": {
-        "value": {
-            "allowedLocations": ["uksouth", "ukwest"],
-            "restrictedVirtualMachines": [],
-            "enforcedTags": []
-        }
+          "type": "object",
+           "defaultValue": {
+              "allowedLocations": ["uksouth", "ukwest"],
+              "restrictedVirtualMachines": [],
+              "enforcedTags": []
+            }
       }
   },
   "variables": {
