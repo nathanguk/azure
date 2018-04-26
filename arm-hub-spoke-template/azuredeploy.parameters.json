@@ -10,7 +10,7 @@
                     { "name": "GatewaySubnet", "addressPrefix": "10.0.0.0/24" },
                     { "name": "ManagementSubnet", "addressPrefix": "10.0.1.0/24" }
                 ],
-                "createGateway": true,
+                "createGateway": false,
                 "gatewaySku": "VpnGw1"
             }
         },
@@ -31,6 +31,13 @@
                     ]
                 }
             ]
+        },
+        "policy": {
+            "value": {
+                "allowedLocations": ["uksouth", "ukwest"],
+                "restrictedVirtualMachines": [],
+                "enforcedTags": []
+            }
         }
     }
 }
