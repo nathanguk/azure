@@ -35,7 +35,7 @@
         "policy": {
             "value": {
                 "allowedLocations": [ "uksouth", "ukwest" ],
-                "allowedVmSKUs": ["Standard_A1","Standard_A2"],
+                "allowedVmSKUs": ["Basic_A","Standard_A","Standard_B","Standard_D","Standard_E","Standard_F","Standard_G","Standard_H","Standard_L","Standard_M","Standard_N"],
                 "enforcedTags": ["Owner", "Department", "Environment","Application"]
             }
         }
