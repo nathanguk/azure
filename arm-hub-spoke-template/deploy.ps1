@@ -40,7 +40,9 @@ New-AzureRmPolicyAssignment -Name "Apply default tags and default values" -Polic
 # Deploy Azure RM "Allowed Virtual Machine SKU's" Policy
 $vmList = New-Object System.Collections.Generic.List[System.Object]
 foreach($vmSeries in $parameters.parameters.policy.value.allowedVmSKUs){
-    $vmList.Add((Get-AzureRmVMSize -location $loc | Where-Object {$_.Name -match 'Standard_A1'}).Name)
+    foreach($vmSize in (Get-AzureRmVMSize -location $loc | Where-Object {$_.Name -match $vmSeries}).Name){
+        $vmList.Add($vmSize)
+    }
 }
 
 $AllowedVmSKUs = @{"listOfAllowedSKUs"=($vmList.ToArray())}
