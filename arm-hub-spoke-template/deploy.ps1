@@ -38,13 +38,12 @@ $PolicySet = Get-AzureRmPolicySetDefinition | Where-Object {$_.Name -eq 'TagInit
 New-AzureRmPolicyAssignment -Name "Apply default tags and default values" -PolicySetDefinition $PolicySet -Scope "/subscriptions/$((Get-AzureRmContext).Subscription.Id)" -Sku @{"name"="A1";"tier"="Standard"}
 
 # Deploy Azure RM "Allowed Virtual Machine SKU's" Policy
-
 $vmList = New-Object System.Collections.Generic.List[System.Object]
 foreach($vmSeries in $parameters.parameters.policy.value.allowedVmSKUs){
     $vmList.Add((Get-AzureRmVMSize -location $loc | Where-Object {$_.Name -match 'Standard_A1'}).Name)
 }
 
-$AllowedVmSKUs = @{"listOfAllowedSKUs"=("Standard_A2","Standard_A4")}
+$AllowedVmSKUs = @{"listOfAllowedSKUs"=($vmList.ToArray())}
 $Policy = Get-AzureRmPolicyDefinition | Where-Object {$_.Properties.DisplayName -eq 'Allowed virtual machine SKUs' -and $_.Properties.PolicyType -eq 'BuiltIn'}
 New-AzureRmPolicyAssignment -Name "Allowed virtual machine SKUs" -PolicyDefinition $Policy -Scope "/subscriptions/$((Get-AzureRmContext).Subscription.Id)" -PolicyParameterObject $AllowedVmSKUs
 
