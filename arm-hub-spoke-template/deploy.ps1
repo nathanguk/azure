@@ -6,7 +6,7 @@ Write-Output "Logged into Azure RM account"
 # Set Template Variables
 $templateUri="https://raw.githubusercontent.com/nathanguk/azure/master/arm-hub-spoke-template/azuredeploy.json"
 $parametersUri="https://raw.githubusercontent.com/nathanguk/azure/master/arm-hub-spoke-template/azuredeploy.parameters.json"
-$loc="westeurope"
+$loc="uksouth"
 $parameters = Invoke-RestMethod -Uri $parametersUri
 
 # Deploy Azure RM "Allowed Location" Policy
@@ -36,6 +36,7 @@ foreach($tagName in $parameters.parameters.policy.value.enforcedTags){
 New-AzureRmPolicySetDefinition -Name "TagInitiative" -DisplayName "Apply default tags and default values" -Description "Apply default tags and default values" -PolicyDefinition ($PolicyDefinition | ConvertTo-JSON -Compress -Depth 5)
 $PolicySet = Get-AzureRmPolicySetDefinition | Where-Object {$_.Name -eq 'TagInitiative'}
 New-AzureRmPolicyAssignment -Name "Apply default tags and default values" -PolicySetDefinition $PolicySet -Scope "/subscriptions/$((Get-AzureRmContext).Subscription.Id)" -Sku @{"name"="A1";"tier"="Standard"}
+
 
 # Deploy Azure RM "Allowed Virtual Machine SKU's" Policy
 $vmList = New-Object System.Collections.Generic.List[System.Object]
