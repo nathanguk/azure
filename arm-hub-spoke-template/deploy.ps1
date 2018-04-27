@@ -35,6 +35,7 @@ foreach($tagName in $parameters.parameters.policy.value.enforcedTags){
 
 New-AzureRmPolicySetDefinition -Name "TagInitiative" -DisplayName "Apply default tags and default values" -Description "Apply default tags and default values" -PolicyDefinition ($PolicyDefinition | ConvertTo-JSON -Compress -Depth 5)
 $PolicySet = Get-AzureRmPolicySetDefinition | Where-Object {$_.Name -eq 'TagInitiative'}
+Start-Sleep -s 10
 New-AzureRmPolicyAssignment -Name "Apply default tags and default values" -PolicySetDefinition $PolicySet -Scope "/subscriptions/$((Get-AzureRmContext).Subscription.Id)" -Sku @{"name"="A1";"tier"="Standard"}
 
 
