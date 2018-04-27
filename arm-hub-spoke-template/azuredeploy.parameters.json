@@ -36,7 +36,7 @@
             "value": {
                 "allowedLocations": [ "uksouth", "ukwest" ],
                 "restrictedVirtualMachines": [],
-                "enforcedTags": []
+                "enforcedTags": ["Owner", "Department", "Environment","Application"]
             }
         }
     }

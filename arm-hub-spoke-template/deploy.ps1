@@ -15,20 +15,29 @@ $AllowedLocations = @{"listOfAllowedLocations"=($parameters.parameters.policy.va
 New-AzureRmPolicyAssignment -Name "Allowed Locations" -PolicyDefinition $Policy -Scope "/subscriptions/$((Get-AzureRmContext).Subscription.Id)" -PolicyParameterObject $AllowedLocations
 
 # Deploy Azure RM "Enforce Tag and its value" Policy
-$Policy = Get-AzureRmPolicyDefinition | Where-Object {$_.Properties.DisplayName -eq 'Enforce tag and its value' -and $_.Properties.PolicyType -eq 'BuiltIn'}
+$Policy = Get-AzureRmPolicyDefinition | Where-Object {$_.Properties.DisplayName -eq 'Apply tag and its default value' -and $_.Properties.PolicyType -eq 'BuiltIn'}
+
+$PolicyDefinition = @()
+
+foreach($tagName in $parameters.parameters.policy.value.enforcedTags){
+    write-output $tagName
+    $PolicyDefinition =+ "{'policyDefinitionId':'/providers/Microsoft.Authorization/policyDefinitions/$Policy.name','parameters':{'tagName': {'value':'$tagName'},'tagValue':{'value': 'Unknown'}}}"
+}
+
+New-AzureRmPolicyDefinition -Name "ANSTagDefinition" -DisplayName "Apply default tags and default values" -Policy ($PolicyDefinition | ConvertTo-JSON -Compress)
 
 
 # Deploy the Hub resource group
 $hubrg = $parameters.parameters.hub.value.resourceGroup
 Write-Output "Creating Resource Group: "$hubrg
-$hubrgObj = New-AzureRmResourceGroup -Location $loc -Name $hubrg
+New-AzureRmResourceGroup -Location $loc -Name $hubrg
 Write-Output "Assigning Policy To: "$hubrg
 
 # Deploy the Spoke resource group/s
 foreach($spoke in $parameters.parameters.spokes.value){
     $rg = $spoke.resourceGroup
     Write-Output "Creating Resource Group: "$rg
-    $rgObj = New-AzureRmResourceGroup -Location $loc -Name $rg
+    New-AzureRmResourceGroup -Location $loc -Name $rg
     Write-Output "Assigning Policy To: "$rg
 } 
 
