@@ -16,15 +16,39 @@ New-AzureRmPolicyAssignment -Name "Allowed Locations" -PolicyDefinition $Policy 
 
 # Deploy Azure RM "Enforce Tag and its value" Policy
 $Policy = Get-AzureRmPolicyDefinition | Where-Object {$_.Properties.DisplayName -eq 'Apply tag and its default value' -and $_.Properties.PolicyType -eq 'BuiltIn'}
-
-$PolicyDefinition = @()
+$PolicyDefinition = New-Object System.Collections.Generic.List[System.Object]
 
 foreach($tagName in $parameters.parameters.policy.value.enforcedTags){
     write-output $tagName
-    $PolicyDefinition =+ "{'policyDefinitionId':'/providers/Microsoft.Authorization/policyDefinitions/$Policy.name','parameters':{'tagName': {'value':'$tagName'},'tagValue':{'value': 'Unknown'}}}"
+    $PolicyDefinition.Add(@{
+        "policyDefinitionId"= "/providers/Microsoft.Authorization/policyDefinitions/$($Policy.name)";
+        "parameters"=@{
+            "tagName"=@{ 
+                "value"="$tagName";
+            };
+            "tagValue"=@{
+                "value"= "Unknown";
+            };
+        };
+    })
 }
 
-New-AzureRmPolicyDefinition -Name "ANSTagDefinition" -DisplayName "Apply default tags and default values" -Policy ($PolicyDefinition | ConvertTo-JSON -Compress)
+New-AzureRmPolicySetDefinition -Name "TagInitiative" -DisplayName "Apply default tags and default values" -Description "Apply default tags and default values" -PolicyDefinition ($PolicyDefinition | ConvertTo-JSON -Compress -Depth 5)
+$PolicySet = Get-AzureRmPolicySetDefinition | Where-Object {$_.Name -eq 'TagInitiative'}
+New-AzureRmPolicyAssignment -Name "Apply default tags and default values" -PolicySetDefinition $PolicySet -Scope "/subscriptions/$((Get-AzureRmContext).Subscription.Id)" -Sku @{"name"="A1";"tier"="Standard"}
+
+# Deploy Azure RM "Allowed Virtual Machine SKU's" Policy
+
+$vmList = New-Object System.Collections.Generic.List[System.Object]
+foreach($vmSeries in $parameters.parameters.policy.value.allowedVmSKUs){
+    $vmList.Add((Get-AzureRmVMSize -location $loc | Where-Object {$_.Name -match 'Standard_A1'}).Name)
+}
+
+$AllowedVmSKUs = @{"listOfAllowedSKUs"=("Standard_A2","Standard_A4")}
+$Policy = Get-AzureRmPolicyDefinition | Where-Object {$_.Properties.DisplayName -eq 'Allowed virtual machine SKUs' -and $_.Properties.PolicyType -eq 'BuiltIn'}
+New-AzureRmPolicyAssignment -Name "Allowed virtual machine SKUs" -PolicyDefinition $Policy -Scope "/subscriptions/$((Get-AzureRmContext).Subscription.Id)" -PolicyParameterObject $AllowedVmSKUs
+
+
 
 
 # Deploy the Hub resource group

@@ -35,7 +35,7 @@
         "policy": {
             "value": {
                 "allowedLocations": [ "uksouth", "ukwest" ],
-                "restrictedVirtualMachines": [],
+                "allowedVmSKUs": ["Standard_A1","Standard_A2"],
                 "enforcedTags": ["Owner", "Department", "Environment","Application"]
             }
         }
