@@ -54,11 +54,11 @@
   "resources": [
     {
       "type": "Microsoft.Network/networkSecurityGroups",
-      "name": "[concat(parameters('spoke').subnets[copyIndex('nsgs')].name,'-nsg')]",
+      "name": "[concat(parameters('spoke').subnets[copyIndex('subnets')].name,'-nsg')]",
       "location": "[resourceGroup().location]",
       "apiVersion": "2018-03-01",
       "copy": {
-        "name": "nsgs",
+        "name": "subnets",
         "count": "[length(parameters('spoke').subnets)]"
       },
       "properties": {

@@ -1,6 +1,6 @@
 # Login to Azure
 Write-Output "Login to Azure RM account"
-Login-AzureRmAccount
+##Login-AzureRmAccount
 Write-Output "Logged into Azure RM account"
 
 # Set Template Variables
@@ -84,4 +84,4 @@ $vpnGatewayPipName = (Get-AzureRmResource -ResourceId $vpnGatewayPipId).Name
 Write-Output "Public IP Address: " (Get-AzureRmPublicIpAddress -Name $vpnGatewayPipName -ResourceGroupName $hubrg).IpAddress
 
 #Logout of Azure
-Remove-AzureRMAccount
+##Remove-AzureRMAccount
