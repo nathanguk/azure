@@ -56,7 +56,7 @@
   "resources": [
     {
       "type": "Microsoft.Network/networkSecurityGroups",
-      "name": "[concat(parameters('subnets').subnets[copyIndex('nsgs')].name,'-nsg')]",
+      "name": "[concat(parameters('subnets')[copyIndex('nsgs')].name,'-nsg')]",
       "location": "[resourceGroup().location]",
       "apiVersion": "2018-03-01",
       "copy": {
@@ -93,14 +93,14 @@
         },
         "copy": [{
           "name": "subnets",
-          "dependsOn": "[concat(parameters('subnets').subnets[copyIndex('subnets')].name,'-nsg')]",
+          "dependsOn": "[concat(parameters('subnets')[copyIndex('subnets')].name,'-nsg')]",
           "count": "[length(parameters('subnets'))]",
           "input": {
             "name": "[parameters('subnets')[copyIndex('subnets')].name]",
             "properties": {
               "addressPrefix": "[parameters('subnets')[copyIndex('subnets')].addressPrefix]",
               "networkSecurityGroup": {
-                "id": "[resourceId('Microsoft.Network/networkSecurityGroups',concat(parameters('subnets').subnets[copyIndex('subnets')].name,'-nsg'))]"
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups',concat(parameters('subnets')[copyIndex('subnets')].name,'-nsg'))]"
               }
             }
           }
