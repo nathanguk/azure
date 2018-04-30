@@ -91,7 +91,7 @@
         },
         "copy": [{
           "name": "subnets",
-          "dependsOn": ["[concat(parameters('spoke').subnets[copyIndex('subnets')].name,'-nsg')]"],
+          "dependsOn": "[concat(parameters('spoke').subnets[copyIndex('subnets')].name,'-nsg')]",
           "count": "[length(parameters('spoke').subnets)]",
           "input": {
             "name": "[parameters('spoke').subnets[copyIndex('subnets')].name]",
