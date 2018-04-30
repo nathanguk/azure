@@ -60,22 +60,24 @@
       "copy": {
         "count": "[length(parameters('spoke').subnets)]"
       },
-      "securityRules": [
-        {
-          "name": "RDP",
-          "properties": {
-            "description": "Allows RDP traffic",
-            "protocol": "Tcp",
-            "sourcePortRange": "*",
-            "destinationPortRange": "3389",
-            "sourceAddressPrefix": "*",
-            "destinationAddressPrefix": "*",
-            "access": "Allow",
-            "priority": 100,
-            "direction": "Inbound"
+      "properties": {
+        "securityRules": [
+          {
+            "name": "RDP",
+            "properties": {
+              "description": "Allows RDP traffic",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "3389",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 100,
+              "direction": "Inbound"
+            }
           }
-        }
-      ]
+        ]
+      }
     },
     {
       "name": "[concat(parameters('spoke').vnet.name)]",
@@ -92,7 +94,8 @@
           "input": {
             "name": "[parameters('spoke').subnets[copyIndex('subnets')].name]",
             "properties": {
-              "addressPrefix": "[parameters('spoke').subnets[copyIndex('subnets')].addressPrefix]"
+              "addressPrefix": "[parameters('spoke').subnets[copyIndex('subnets')].addressPrefix]",
+              "nsgId": "[concat(parameters('spoke').subnets[copyIndex('subnets')].name,'-nsg')]"
             }
           }
         }]
