@@ -54,11 +54,11 @@
   "resources": [
     {
       "type": "Microsoft.Network/networkSecurityGroups",
-      "name": "[concat(parameters('spoke').subnets[copyIndex('subnets')].name,'-nsg')]",
+      "name": "[concat(parameters('spoke').subnets[copyIndex('nsgs')].name,'-nsg')]",
       "location": "[resourceGroup().location]",
       "apiVersion": "2018-03-01",
       "copy": {
-        "name": "subnets",
+        "name": "nsgs",
         "count": "[length(parameters('spoke').subnets)]"
       },
       "properties": {
@@ -96,7 +96,9 @@
             "name": "[parameters('spoke').subnets[copyIndex('subnets')].name]",
             "properties": {
               "addressPrefix": "[parameters('spoke').subnets[copyIndex('subnets')].addressPrefix]",
-              "nsgId": "[concat(parameters('spoke').subnets[copyIndex('subnets')].name,'-nsg')]"
+              "networkSecurityGroup": {
+                "id": "[concat(parameters('spoke').subnets[copyIndex('subnets')].name,'-nsg')]"
+              }
             }
           }
         }]
