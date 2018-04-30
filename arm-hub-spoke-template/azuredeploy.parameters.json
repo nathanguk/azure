@@ -4,8 +4,8 @@
     "parameters": {
         "hub": {
             "value": {
-                "resourceGroup": "ansHub",
-                "vnet": { "name": "ansHub", "addressPrefixes": [ "10.0.0.0/16" ] },
+                "resourceGroup": "ansHub-rg",
+                "vnet": { "name": "ansHub-vnet", "addressPrefixes": [ "10.0.0.0/16" ] },
                 "subnets": [
                     { "name": "GatewaySubnet", "addressPrefix": "10.0.0.0/24" },
                     { "name": "ManagementSubnet", "addressPrefix": "10.0.1.0/24" }
@@ -17,15 +17,15 @@
         "spokes": {
             "value": [
                 {
-                    "resourceGroup": "ansSpoke1",
-                    "vnet": { "name": "ansSpoke1", "addressPrefixes": [ "10.1.0.0/16"  ] },
+                    "resourceGroup": "ansSpoke1-rg",
+                    "vnet": { "name": "ansSpoke1-vnet", "addressPrefixes": [ "10.1.0.0/16"  ] },
                     "subnets": [
                         { "name": "workload", "addressPrefix": "10.1.0.0/24" }
                     ]
                 },
                 {
-                    "resourceGroup": "ansSpoke2",
-                    "vnet": { "name": "ansSpoke2", "addressPrefixes": [ "10.2.0.0/16"  ] },
+                    "resourceGroup": "ansSpoke2-rg",
+                    "vnet": { "name": "ansSpoke2-vnet", "addressPrefixes": [ "10.2.0.0/16"  ] },
                     "subnets": [
                         { "name": "workload", "addressPrefix": "10.2.0.0/24" }
                     ]
