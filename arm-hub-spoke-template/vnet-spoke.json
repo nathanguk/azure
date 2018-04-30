@@ -58,6 +58,7 @@
       "location": "[resourceGroup().location]",
       "apiVersion": "2018-03-01",
       "copy": {
+        "name": "nsgs",
         "count": "[length(parameters('spoke').subnets)]"
       },
       "properties": {
