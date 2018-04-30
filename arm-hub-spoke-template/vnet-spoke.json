@@ -97,7 +97,7 @@
             "properties": {
               "addressPrefix": "[parameters('spoke').subnets[copyIndex('subnets')].addressPrefix]",
               "networkSecurityGroup": {
-                "id": "[concat(parameters('spoke').subnets[copyIndex('subnets')].name,'-nsg')]"
+                "id": "[concat('/providers/Microsoft.Network/networkSecurityGroups/',parameters('spoke').subnets[copyIndex('subnets')].name,'-nsg')]"
               }
             }
           }
