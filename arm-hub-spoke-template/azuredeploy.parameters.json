@@ -9,7 +9,7 @@
                 "gwSubnet": { "name": "GatewaySubnet", "addressPrefix": "10.0.0.0/24" },
                 "subnets": [
                     { "name": "ManagementSubnet", "addressPrefix": "10.0.1.0/24" },
-                    { "name": "ActiveDirectorySubnet", "addressPrefix": "10.0.0.0/24" }
+                    { "name": "ActiveDirectorySubnet", "addressPrefix": "10.0.2.0/24" }
                 ],
                 
                 "createGateway": false,
