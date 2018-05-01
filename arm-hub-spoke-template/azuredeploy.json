@@ -8,9 +8,11 @@
               "resourceGroup": "core",
               "vnet": { "name": "core", "addressPrefixes": [ "10.0.0.0/16" ] },
               "gwSubnet": { "name": "GatewaySubnet", "addressPrefix": "10.0.0.0/24" },
+              "mgmtSubnet": { "name": "ManagementSubnet", "addressPrefix": "10.0.1.0/24" },
+              "adSubnet": { "name": "ActiveDirectorySubnet", "addressPrefix": "10.0.2.0/24" },
               "subnets": [
-                { "name": "ManagementSubnet", "addressPrefix": "10.0.1.0/24" },
-                { "name": "ActiveDirectorySubnet", "addressPrefix": "10.0.2.0/24" }
+                  { "name": "workload1", "addressPrefix": "10.0.3.0/24" },
+                  { "name": "workload2", "addressPrefix": "10.0.4.0/24" }
               ],
               "createGateway": true,
               "gatewaySku": "Basic"

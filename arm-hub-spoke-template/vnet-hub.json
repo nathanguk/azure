@@ -23,11 +23,25 @@
         "description": "GatewaySubnet if a VPN gateway is being created."
       }
     },
+    "mgmtSubnet": {
+      "type": "object",
+      "defaultValue":  { "name": "ManagementSubnet", "addressPrefix": "10.0.1.0/24" },
+      "metadata": {
+        "description": "Managment Subnet"
+      }
+    },
+    "adSubnet": {
+      "type": "object",
+      "defaultValue":  { "name": "ActiveDirectorySubnet", "addressPrefix": "10.0.2.0/24" },
+      "metadata": {
+        "description": "Active Directory Subnet"
+      }
+    },
     "subnets": {
       "type": "array",
       "defaultValue": [
-          { "name": "ManagementSubnet", "addressPrefix": "10.0.1.0/24" },
-          { "name": "ActiveDirectorySubnet", "addressPrefix": "10.0.2.0/24" }
+          { "name": "workload1", "addressPrefix": "10.0.3.0/24" },
+          { "name": "workload2", "addressPrefix": "10.0.4.0/24" }
         ],
       "metadata": {
         "description": "Array of the subnets."
@@ -66,7 +80,7 @@
           "name": "[concat(parameters('subnets')[copyIndex('nsgs')].name,'-nsg')]"
         }
       }
-  ]
+    ]
   },
   "resources": [
     {
@@ -107,33 +121,51 @@
         "addressSpace": {
           "addressPrefixes": "[parameters('vNetAddressPrefixes')]"
         },
-        "copy": [{
-          "name": "subnets",
-          "count": "[length(parameters('subnets'))]",
-          "input": {
-            "name": "[parameters('subnets')[copyIndex('subnets')].name]",
+        "subnets": [
+          {
+            "name": "[parameters('gwSubnet').name]",
             "properties": {
-              "addressPrefix": "[parameters('subnets')[copyIndex('subnets')].addressPrefix]",
+              "addressPrefix": "[parameters('gwSubnet').addressPrefix]"
+            }
+          },
+          {
+            "name": "[parameters('mgmtSubnet').name]",
+            "properties": {
+              "addressPrefix": "[parameters('mgmtSubnet').addressPrefix]",
               "networkSecurityGroup": {
-                "id": "[resourceId('Microsoft.Network/networkSecurityGroups',concat(parameters('subnets')[copyIndex('subnets')].name,'-nsg'))]"
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups',concat(parameters('mgmtSubnet').name,'-nsg'))]"
+              }
+            }
+          },
+          {
+            "name": "[parameters('adSubnet').name]",
+            "properties": {
+              "addressPrefix": "[parameters('adSubnet').addressPrefix]",
+              "networkSecurityGroup": {
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups',concat(parameters('mgmtSubnet').name,'-nsg'))]"
               }
             }
           }
-        }]
+        ]
       }
     },
     {
       "type": "Microsoft.Network/virtualNetworks/subnets",
       "apiVersion": "2017-10-01",
-      "name": "[concat(parameters('vnetName'), '/', parameters('gwSubnet').name)]",
+      "name": "[concat(parameters('vnetName'), '/', parameters('subnets')[copyIndex('subnets')].name)]",
       "location": "[resourceGroup().location]",
-      "dependsOn": [
-        "[concat('Microsoft.Network/virtualNetworks/', parameters('vnetName'))]"
-      ],
+      "dependsOn": ["[concat('Microsoft.Network/virtualNetworks/', parameters('vnetName'))]"],
+      "copy": [{
+        "name": "subnets",
+        "count": "[length(parameters('subnets'))]"
+      }],
       "properties": {
-        "addressPrefix": "[parameters('gwSubnet').addressPrefix]"
+        "addressPrefix": "[parameters('subnets')[copyIndex('subnets')].addressPrefix]",
+        "networkSecurityGroup": {
+          "id": "[resourceId('Microsoft.Network/networkSecurityGroups',concat(parameters('subnets')[copyIndex('subnets')].name,'-nsg'))]"
+        }
       }
-    },
+    },  
     {
       "condition": "[parameters('createGateway')]",
       "name": "[variables('gatewayName')]",
