@@ -125,7 +125,7 @@
       ],
       "properties": {
         "allowVirtualNetworkAccess": true,
-        "allowForwardedTraffic": false,
+        "allowForwardedTraffic": true,
         "allowGatewayTransit": false,
         "useRemoteGateways": false,
         "remoteVirtualNetwork": {
@@ -157,7 +157,7 @@
                 "location": "[resourceGroup().location]",
                 "properties": {
                     "allowVirtualNetworkAccess": true,
-                    "allowForwardedTraffic": false,
+                    "allowForwardedTraffic": true,
                     "allowGatewayTransit": true,
                     "useRemoteGateways": false,
                     "remoteVirtualNetwork": {
