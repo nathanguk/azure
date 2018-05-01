@@ -6,10 +6,12 @@
             "value": {
                 "resourceGroup": "ansHub-rg",
                 "vnet": { "name": "ansHub-vnet", "addressPrefixes": [ "10.0.0.0/16" ] },
+                "gwSubnet": { "name": "GatewaySubnet", "addressPrefix": "10.0.0.0/24" },
                 "subnets": [
-                    { "name": "GatewaySubnet", "addressPrefix": "10.0.0.0/24" },
-                    { "name": "ManagementSubnet", "addressPrefix": "10.0.1.0/24" }
+                    { "name": "ManagementSubnet", "addressPrefix": "10.0.1.0/24" },
+                    { "name": "ActiveDirectorySubnet", "addressPrefix": "10.0.0.0/24" }
                 ],
+                
                 "createGateway": false,
                 "gatewaySku": "VpnGw1"
             }

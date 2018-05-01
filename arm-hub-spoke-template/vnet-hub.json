@@ -16,10 +16,10 @@
         "description": "Array of IP address prefixes for the vNet address space.  There is usually only one prefix."
       }
     },
+    "gwSubnet": { "name": "GatewaySubnet", "addressPrefix": "10.0.0.0/24" },
     "subnets": {
       "type": "array",
       "defaultValue": [
-        { "name": "GatewaySubnet", "addressPrefix": "10.0.0.0/24" },
         { "name": "outside", "addressPrefix": "10.0.1.0/24" },
         { "name": "inside", "addressPrefix": "10.0.2.0/24" }
         ],
@@ -51,7 +51,16 @@
     "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
     "gatewayPipId": "[resourceId('Microsoft.Network/publicIpAddresses', variables('gatewayPublicIpName'))]",
     "gatewaySubnetId": "[concat(variables('vnetID'), '/subnets/GatewaySubnet')]",
-    "vpnType": "RouteBased"
+    "vpnType": "RouteBased",
+    "copy": [
+      {
+        "name": "nsgs",
+        "count": "length(parameters('subnets')",
+        "input": {
+          "name": "[concat(parameters('subnets')[copyIndex('nsgs')].name,'-nsg')]"
+        }
+      }
+  ]
   },
   "resources": [
     {
@@ -87,13 +96,15 @@
       "type": "Microsoft.Network/virtualNetworks",
       "apiVersion": "2017-10-01",
       "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[variables('nsgs')]"
+      ],
       "properties": {
         "addressSpace": {
           "addressPrefixes": "[parameters('vNetAddressPrefixes')]"
         },
         "copy": [{
           "name": "subnets",
-          "dependsOn": "[concat(parameters('subnets')[copyIndex('subnets')].name,'-nsg')]",
           "count": "[length(parameters('subnets'))]",
           "input": {
             "name": "[parameters('subnets')[copyIndex('subnets')].name]",
@@ -104,7 +115,15 @@
               }
             }
           }
-        }]
+        }],
+        "subnets": [
+          {
+            "name": "[parameters('gwSubnet').name]",
+            "properties": {
+              "addressPrefix": "[parameters('gwSubnet').addressPrefix]"
+            }
+          }
+        ]
       }
     },
     {

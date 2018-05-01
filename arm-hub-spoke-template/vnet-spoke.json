@@ -41,13 +41,20 @@
     "spokeID": "[resourceId('Microsoft.Network/virtualNetworks/', parameters('spoke').vnet.name)]",
     "copy": [
         {
-            "name": "subnets",
-            "count": "[length(parameters('spoke').subnets)]",
-            "input": {
-              "name": "[parameters('spoke').subnets[copyIndex('subnets')].name]",
-              "addressPrefix": "[parameters('spoke').subnets[copyIndex('subnets')].addressPrefix]",
-              "id": "[concat(resourceId('Microsoft.Network/virtualNetworks/', parameters('spoke').vnet.name), '/subnets/', parameters('spoke').subnets[copyIndex('subnets')].name)]"
-            }
+          "name": "subnets",
+          "count": "[length(parameters('spoke').subnets)]",
+          "input": {
+            "name": "[parameters('spoke').subnets[copyIndex('subnets')].name]",
+            "addressPrefix": "[parameters('spoke').subnets[copyIndex('subnets')].addressPrefix]",
+            "id": "[concat(resourceId('Microsoft.Network/virtualNetworks/', parameters('spoke').vnet.name), '/subnets/', parameters('spoke').subnets[copyIndex('subnets')].name)]"
+          }
+        },
+        {
+          "name": "nsgs",
+          "count": "[length(parameters('spoke').subnets)]",
+          "input": {
+            "name": "[concat(parameters('spoke').subnets[copyIndex('nsgs')].name,'-nsg')]"
+          }
         }
     ]
   },
@@ -85,13 +92,15 @@
       "type": "Microsoft.Network/virtualNetworks",
       "apiVersion": "2017-10-01",
       "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[variables('nsgs')]"
+      ],
       "properties": {
         "addressSpace": {
           "addressPrefixes": "[parameters('spoke').vnet.addressPrefixes]"
         },
         "copy": [{
           "name": "subnets",
-          "dependsOn": "[concat(parameters('spoke').subnets[copyIndex('subnets')].name,'-nsg')]",
           "count": "[length(parameters('spoke').subnets)]",
           "input": {
             "name": "[parameters('spoke').subnets[copyIndex('subnets')].name]",
@@ -189,6 +198,10 @@
     "subnets": {
       "type": "array",
       "value": "[variables('subnets')]"
+    },
+    "nsgs": {
+      "type": "array",
+      "value": "[variables('nsgs')]"
     }
   }
 }
