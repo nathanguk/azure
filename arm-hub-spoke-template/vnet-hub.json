@@ -59,7 +59,7 @@
     "copy": [
       {
         "name": "nsgs",
-        "count": "length(parameters('subnets')",
+        "count": "[length(parameters('subnets'))]",
         "input": {
           "name": "[concat(parameters('subnets')[copyIndex('nsgs')].name,'-nsg')]"
         }
