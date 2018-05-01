@@ -100,9 +100,7 @@
       "type": "Microsoft.Network/virtualNetworks",
       "apiVersion": "2017-10-01",
       "location": "[resourceGroup().location]",
-      "dependsOn": [
-        "[variables('nsgs')]"
-      ],
+      "dependsOn": ["[variables('nsgs').name]"],
       "properties": {
         "addressSpace": {
           "addressPrefixes": "[parameters('vNetAddressPrefixes')]"
