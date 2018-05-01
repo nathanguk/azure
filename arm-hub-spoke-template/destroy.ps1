@@ -1,6 +1,6 @@
 # Login to Azure
 Write-Output "Login to Azure RM account"
-##Login-AzureRmAccount
+Login-AzureRmAccount
 Write-Output "Logged into Azure RM account"
 
 # Set Variables
@@ -31,4 +31,4 @@ foreach($spoke in $parameters.parameters.spokes.value){
 } 
 
 #Logout of Azure
-##Remove-AzureRMAccount
+Remove-AzureRMAccount
