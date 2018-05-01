@@ -20,8 +20,9 @@
     "subnets": {
       "type": "array",
       "defaultValue": [
-        { "name": "outside", "addressPrefix": "10.0.1.0/24" },
-        { "name": "inside", "addressPrefix": "10.0.2.0/24" }
+          { "name": "subnet1", "addressPrefix": "10.0.1.0/24" },
+          { "name": "subnet2", "addressPrefix": "10.0.2.0/24" },
+          { "name": "subnet3", "addressPrefix": "10.0.3.0/24" }
         ],
       "metadata": {
         "description": "Array of the subnets. Must include GatewaySubnet if a VPN gateway is being created."
