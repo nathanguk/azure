@@ -77,7 +77,7 @@
               "protocol": "Tcp",
               "sourcePortRange": "*",
               "destinationPortRange": "3389",
-              "sourceAddressPrefix": "*",
+              "sourceAddressPrefix": "parameters('hub').mgmtSubnet.addressPrefix",
               "destinationAddressPrefix": "*",
               "access": "Allow",
               "priority": 100,
