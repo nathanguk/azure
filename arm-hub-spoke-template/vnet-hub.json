@@ -18,17 +18,19 @@
     },
     "gwSubnet": {
       "type": "object",
-      "defaultValue":  { "name": "GatewaySubnet", "addressPrefix": "10.0.0.0/24" }
+      "defaultValue":  { "name": "GatewaySubnet", "addressPrefix": "10.0.0.0/24" },
+      "metadata": {
+        "description": "GatewaySubnet if a VPN gateway is being created."
+      }
     },
     "subnets": {
       "type": "array",
       "defaultValue": [
-          { "name": "subnet1", "addressPrefix": "10.0.1.0/24" },
-          { "name": "subnet2", "addressPrefix": "10.0.2.0/24" },
-          { "name": "subnet3", "addressPrefix": "10.0.3.0/24" }
+          { "name": "ManagementSubnet", "addressPrefix": "10.0.1.0/24" },
+          { "name": "ActiveDirectorySubnet", "addressPrefix": "10.0.2.0/24" }
         ],
       "metadata": {
-        "description": "Array of the subnets. Must include GatewaySubnet if a VPN gateway is being created."
+        "description": "Array of the subnets."
       }
     },
     "createGateway": {
