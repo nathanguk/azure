@@ -16,7 +16,10 @@
         "description": "Array of IP address prefixes for the vNet address space.  There is usually only one prefix."
       }
     },
-    "gwSubnet": { "name": "GatewaySubnet", "addressPrefix": "10.0.0.0/24" },
+    "gwSubnet": {
+      "type": "object",
+      "defaultValue":  { "name": "GatewaySubnet", "addressPrefix": "10.0.0.0/24" }
+    },
     "subnets": {
       "type": "array",
       "defaultValue": [

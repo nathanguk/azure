@@ -73,6 +73,9 @@
           "vNetAddressPrefixes": {
               "value": "[parameters('hub').vnet.addressPrefixes]"
           },
+          "gwSubnet": {
+               "value": "[parameters('hub').gwSubnet]"
+          },
           "subnets": {
               "value": "[parameters('hub').subnets]"
           },
