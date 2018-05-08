@@ -1,3 +1,17 @@
+<#
+.SYNOPSIS
+    This script deploys Azure Resource Groups, Azure Polices and a Cloud Start Hub Spoke ARM template.
+.DESCRIPTION
+    This script deploys Azure Resource Groups, Azure Polices and a Cloud Start Hub Spoke ARM template with a VPN Gateway, the ARM Template and parameters is retrieved from a central GitHub repo.
+.NOTES
+    File Name  : deploy.ps1
+    Author     : Nathan Gaskill - nathan.gaskill@ansgroup.co.uk
+    Owner      : ANS Group
+    Web:       : http://www.ans.co.uk  
+.LINK
+    http://www.ans.co.uk
+#>
+
 # Login to Azure
 Write-Output "Login to Azure RM account"
 Login-AzureRmAccount
