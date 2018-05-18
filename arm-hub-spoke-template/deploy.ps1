@@ -97,8 +97,6 @@ $Policy = Get-AzureRmPolicyDefinition | Where-Object {$_.Properties.DisplayName 
 New-AzureRmPolicyAssignment -Name "Allowed virtual machine SKUs" -PolicyDefinition $Policy -Scope "/subscriptions/$((Get-AzureRmContext).Subscription.Id)" -PolicyParameterObject $AllowedVmSKUs
 
 
-
-
 # Deploy the Hub resource group
 $hubrg = $parameters.parameters.hub.value.resourceGroup
 Write-Output "Creating Resource Group: "$hubrg
