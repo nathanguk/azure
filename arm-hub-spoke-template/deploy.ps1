@@ -12,8 +12,15 @@
     http://www.ans.co.uk
 #>
 
+# Install AzureRM Resources Module
+Write-Output "Installing Modules"
+Install-Module -Name "AzureRM"
+Install-Module -Name "AzureRM.Resources"
+
 # Import Azure RM Module
+Write-Output "Importing Modules"
 Import-Module -Name "AzureRM"
+Import-Module -Name "AzureRM.Resources"
 
 # Login to Azure
 Write-Output "Login to Azure RM account"

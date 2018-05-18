@@ -45,6 +45,11 @@
               "description": "Array of spoke objects. See defaultValue for example."
           }
       },
+      "region": {
+          "value": {
+              "deployemntRegion": "uksouth"
+          }
+      },
       "policy": {
           "type": "object",
            "defaultValue": {
