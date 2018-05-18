@@ -20,8 +20,11 @@ Write-Output "Logged into Azure RM account"
 # Set Template Variables
 $templateUri="https://raw.githubusercontent.com/nathanguk/azure/master/arm-hub-spoke-template/azuredeploy.json"
 $parametersUri="https://raw.githubusercontent.com/nathanguk/azure/master/arm-hub-spoke-template/azuredeploy.parameters.json"
-$loc="uksouth"
 $parameters = Invoke-RestMethod -Uri $parametersUri
+
+# Get Deployment Location
+$loc = ($parameters.parameters.region.value.deploymentRegion)
+write-output "Region: "$loc
 
 # Deploy Azure RM "Allowed Location" Policy
 $Policy = Get-AzureRmPolicyDefinition | Where-Object {$_.Properties.DisplayName -eq 'Allowed locations' -and $_.Properties.PolicyType -eq 'BuiltIn'}

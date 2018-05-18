@@ -36,9 +36,14 @@
                 }
             ]
         },
+        "region":{
+            "value": {
+                "deploymentRegion": "westeurope"
+            }
+        },
         "policy": {
             "value": {
-                "allowedLocations": [ "uksouth", "ukwest" ],
+                "allowedLocations": [ "uksouth", "ukwest", "westeurope"],
                 "allowedVmSKUs": ["Basic_A","Standard_A","Standard_B","Standard_D","Standard_E","Standard_F","Standard_G","Standard_H","Standard_L"],
                 "enforcedTags": ["Owner", "Department", "Environment","Application"]
             }
