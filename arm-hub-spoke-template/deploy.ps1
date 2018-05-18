@@ -12,6 +12,9 @@
     http://www.ans.co.uk
 #>
 
+# Import Azure RM Module
+Import-Module -Name "AzureRM"
+
 # Login to Azure
 Write-Output "Login to Azure RM account"
 Login-AzureRmAccount
