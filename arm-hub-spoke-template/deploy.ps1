@@ -28,8 +28,8 @@ if($Continue -eq $false){
 
 # Install AzureRM Resources Module
 Write-Output "Installing Modules"
-Install-Module -Name "AzureRM"
-Install-Module -Name "AzureRM.Resources"
+Install-Module -Name "AzureRM" -Force
+Install-Module -Name "AzureRM.Resources" -Force
 
 # Import Azure RM Module
 Write-Output "Importing Modules"
