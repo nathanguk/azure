@@ -46,7 +46,8 @@
           }
       },
       "region": {
-          "value": {
+        "type": "object",
+        "defaultValue": {
               "deploymentRegion": "uksouth"
           }
       },
