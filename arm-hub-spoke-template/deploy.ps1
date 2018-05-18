@@ -12,6 +12,20 @@
     http://www.ans.co.uk
 #>
 
+Write-host "This script requires Administrator privileges to install moduels, have you run as Administrator (Default is No)" -ForegroundColor Yellow 
+$Readhost = Read-Host " ( y / n ) " 
+Switch ($ReadHost) 
+{ 
+    Y {Write-host "Yes"; $Continue=$true} 
+    N {Write-Host "No"; $Continue=$false} 
+    Default {Write-Host "Default"; $Continue=$false} 
+} 
+
+if($Continue -eq $false){
+    write-host "Exiting please run with Administrator privileges"
+    exit
+}
+
 # Install AzureRM Resources Module
 Write-Output "Installing Modules"
 Install-Module -Name "AzureRM"
