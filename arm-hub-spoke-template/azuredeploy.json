@@ -47,7 +47,7 @@
       },
       "region": {
           "value": {
-              "deployemntRegion": "uksouth"
+              "deploymentRegion": "uksouth"
           }
       },
       "policy": {

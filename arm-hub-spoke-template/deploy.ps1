@@ -21,8 +21,8 @@ $moduleAzureRM = get-module -name "AzureRM"
 if($moduleAzureRM.Version.ToString() -ge "6.0.1"){
     $moduleError = $false 
 } else {
-    write-output "Please update module AzureRM using"
-    write-output "Update-Module -name AzureRM" -ForegroundColor Yellow
+    write-output "Please update module AzureRM using" 
+    write-host "Update-Module -name AzureRM" -ForegroundColor Yellow
     $moduleError = $true    
 }
 
@@ -31,11 +31,12 @@ if($moduleAzureRMres.Version.ToString() -ge "6.0.0"){
     $moduleError = $false 
 } else {    
     write-output "Please update module AzureRM.Resources using"
-    write-output "Update-Module -name AzureRM.Resources" -ForegroundColor Yellow
+    write-host "Update-Module -name AzureRM.Resources" -ForegroundColor Yellow
     $moduleError = $true 
 }
 
 if($moduleError -eq $true){
+    write-output "After updating modules close Powershell window and start again.."
     exit
 }
 
